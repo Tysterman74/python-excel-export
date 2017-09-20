@@ -8,7 +8,7 @@ class searchWindows(object):
         fieldValues = easygui.enterbox(msg,title, fieldValues)
 
         # make sure that none of the fields was left blank
-        while 1:
+        while True:
             if fieldValues is None: break
             errmsg = ""
             for i in range(len(fieldValues)):
@@ -24,15 +24,18 @@ class searchWindows(object):
         
     def msgBoxGo(self,fieldValue):
         msgWindow="Searching for %s" %str(fieldValue)
-        easygui.msgbox(msgWindow)
+        msgTitle="Search Window"
+        easygui.msgbox(msgWindow,msgTitle)
         #message window saying we are searching for the search term
 
     def resultsBoxGo(self):
-        easygui.msgbox("Here are the results")
+        resultsMsg="Here are the results"
+        resultsTitle="Results Window"
+        easygui.msgbox(resultsMsg, resultsTitle)
 
-    def ynBoxGo(self):
+    def exportToExcelGo(self):
         ynboxQuestion="Would you like to export as an Excel ?"
-        ynboxTitle="ExportExcel"
+        ynboxTitle="Export Excel"
         ynResult=easygui.ynbox(ynboxQuestion,ynboxTitle)
         #print(ynResult)
 
@@ -40,4 +43,4 @@ class searchWindows(object):
         searchBoxResult = self.searchBoxGo()
         self.msgBoxGo(searchBoxResult)
         self.resultsBoxGo()
-        self.ynBoxGo()
+        self.exportToExcelGo()
