@@ -2,6 +2,7 @@ import easygui
 import window
 import requests
 from flask import Flask
+from searchWindows import searchWindows
 
 app = Flask(__name__)
 
@@ -15,5 +16,9 @@ def index():
     print(testResponse)
     return testResponse;
 
+searchwindow=searchWindows()
+searchwindow.runAllWindows()
+
 if __name__ == '__main__':
     app.run(debug=True)
+print('starting');
