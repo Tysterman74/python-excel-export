@@ -1,6 +1,5 @@
 import easygui
-import window
-import requests
+import NewEggService
 from flask import Flask
 from searchWindows import searchWindows
 
@@ -9,15 +8,13 @@ app = Flask(__name__)
 @app.route('/')
 
 def index():
-    baseurl = 'http://m.newegg.com/ProductList?description=LCD+TV&categoryId=411' + \
-          '&storeId=10&nodeId=7719&parentCategoryId=264&isSubCategory=true&' + \
-          'categoryType=1'
-    testResponse = requests.get(baseurl).content
+    testResponse = NewEggService.GetResults()
+    # testResponse = requests.get(baseurl).content
     print(testResponse)
-    return testResponse;
+    return testResponse
 
-searchwindow=searchWindows()
-searchwindow.runAllWindows()
+# searchwindow=searchWindows()
+# searchwindow.runAllWindows()
 
 if __name__ == '__main__':
     app.run(debug=True)
