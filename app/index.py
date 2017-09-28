@@ -9,9 +9,12 @@ app = Flask(__name__)
 
 def index():
     testResponse = NewEggService.GetResults()
-    # testResponse = requests.get(baseurl).content
-    print(testResponse)
-    return testResponse
+    for excelObj in testResponse:
+        print(excelObj.name)
+        print(excelObj.price)
+        print(excelObj.url)
+        print(excelObj.vendor)
+    return 'asdf'
 
 # searchwindow=searchWindows()
 # searchwindow.runAllWindows()
