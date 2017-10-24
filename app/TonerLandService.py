@@ -1,6 +1,7 @@
 import requests
 import ExcelObject
 import json
+import re
 from bs4 import BeautifulSoup
 
 
@@ -13,7 +14,7 @@ class TonerLandService:
 # 
 # 
 #
-    keyword="var models"
+ 
 
     def createUrlArray(self):
         baseUrl = 'http://www.tonerland.com/brother/'
@@ -32,38 +33,63 @@ class TonerLandService:
         santizing=container.split()
         return santizing
 
-    def findKeyword(self,word):
-        if word==self.keyword:
+    def find1stKeyword(self,word):
+        firstWord='var'
+        
+        if word==firstWord:
+            return True
+        else:
+            return False
+    
+
+    def find2ndKeyword(self,word):
+        secondWord='models'
+
+        if word==secondWord:
             return True
         else:
             return False
 
+    def findURLKeyword(self,word):
+        urlKeyword='url:'
+        if word==urlKeyword:
+            return True
+        else: 
+            return False
+
     def containsKeyWord(self,array):
-        for item in array:
-            if self.findKeyword(item):
-                print(item)
+        
+        for item in range(1,len(array)):
+            if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
+                return(self.findURLS(array,item))
+
+    def findURLS(self,array,index):
+        listOfURLs=[]
+        for item in range(index,len(array)):
+            if(self.findURLKeyword(array[item])):
+                listOfURLs.append(array[item+1][1:-4])
+        return(listOfURLs)
             
-                
-                
+    def FindManufacturer(self):
+        test="dcp-series fax-series hl-series intellifax-series mfc-series"
+        p=re.compile('(dcprance)')
+        if (p.search(test) is None):
+            print("Could Not Find a match")
+        else: 
+            print("I found a Match")
 
-
-    def findContainers(self):
+    def findContainers(self): #works for first page to find the urls
         with open("base.html") as fp:
             sanitized = BeautifulSoup(fp, 'html.parser')
             #sanitized.encode(fp.encoding)
             itemContainers=(sanitized.find_all('script', type = "text/javascript"))
-            itemLen=len(itemContainers)
-            for item in itemContainers:
-                temp=item.text
-                newtemp=temp.split()
-                if (len(newtemp)>0):
-                    print(len(newtemp))
-                    print(newtemp)
+            temp=itemContainers[29].text
+            newtemp=temp.split()
+            listtemp=self.containsKeyWord(newtemp)
+            #print(listtemp)
+            self.FindManufacturer()
+            return 0
 
-                # self.containsKeyWord(newtemp)
-            print("not "+self.keyword)
-            return itemLen
 
-    
 
 
