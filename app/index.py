@@ -26,13 +26,3 @@ def index():
 if __name__ == '__main__':
     app.run(debug=True)
 print('starting')
-
-# def index():
-    # tls = TonerLandService()
-    # #test = tls.createUrlArray()
-    # #results=tls.GetResults()
-    # # print(test)
-    # results = tls.findContainers()
-    # #results=tls.openLocal()
-    # print(results)
-    # return 'orange'
