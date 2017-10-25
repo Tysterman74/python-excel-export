@@ -85,10 +85,10 @@ class TonerLandService:
             itemContainers=(sanitized.find_all('script', type = "text/javascript"))
             temp=itemContainers[29].text
             newtemp=temp.split()
-            listtemp=self.SearchKeyWord(newtemp)
-            print(listtemp)
+            urlList=self.SearchKeyWord(newtemp)
+            print(urlList)
             #self.FindManufacturer()
-            return 0
+            return urlList
 
 
 
