@@ -57,11 +57,10 @@ class TonerLandService:
         else: 
             return False
 
-    def SearchKeyWord(self,array):
-        
+    def ContainsKeyWord(self,array):
         for item in range(1,len(array)):
             if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
-                return(self.findURLS(array,item))
+                return True
 
     def findURLS(self,array,index):
         listOfURLs=[]
@@ -81,13 +80,17 @@ class TonerLandService:
     def findContainers(self): #works for first page to find the urls
         with open("base.html") as fp:
             sanitized = BeautifulSoup(fp, 'html.parser')
-            #sanitized.encode(fp.encoding)
+            sanitized.encode(fp.encoding)
             itemContainers=(sanitized.find_all('script', type = "text/javascript"))
-            temp=itemContainers[29].text
-            newtemp=temp.split()
-            urlList=self.SearchKeyWord(newtemp)
-            print(urlList)
-            #self.FindManufacturer()
+            containerLen=len(itemContainers)
+            urlList=[]
+            for item in range(0,containerLen):
+                tempContainer=itemContainers[item].text
+                splitContainer=tempContainer.split() 
+                if (self.ContainsKeyWord(splitContainer)==True):
+                    urlList=self.findURLS(splitContainer,item)
+
+
             return urlList
 
 
