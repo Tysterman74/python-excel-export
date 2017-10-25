@@ -57,7 +57,7 @@ class TonerLandService:
         else: 
             return False
 
-    def containsKeyWord(self,array):
+    def SearchKeyWord(self,array):
         
         for item in range(1,len(array)):
             if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
@@ -85,9 +85,9 @@ class TonerLandService:
             itemContainers=(sanitized.find_all('script', type = "text/javascript"))
             temp=itemContainers[29].text
             newtemp=temp.split()
-            listtemp=self.containsKeyWord(newtemp)
-            #print(listtemp)
-            self.FindManufacturer()
+            listtemp=self.SearchKeyWord(newtemp)
+            print(listtemp)
+            #self.FindManufacturer()
             return 0
 
 
