@@ -2,6 +2,7 @@ import requests
 import ExcelObject
 import json
 import re
+import time
 from bs4 import BeautifulSoup
 
 
@@ -11,9 +12,7 @@ class TonerLandService:
 
 # baseURl + Series hardcoded array webscrape or something
 # for each series scrape source
-# 
-# 
-#
+
  
 
     def createUrlArray(self):
@@ -23,7 +22,9 @@ class TonerLandService:
         for s in seriesArray:
             PartialURLArray.append(baseUrl+s) 
         return PartialURLArray
-            
+
+    def sleep5():
+        time.sleep(5)
 
     def GetResults(self):
         response = requests.get('file:///base.html',timeout=5)
@@ -41,7 +42,6 @@ class TonerLandService:
         else:
             return False
     
-
     def find2ndKeyword(self,word):
         secondWord='models'
 
