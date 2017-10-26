@@ -24,7 +24,7 @@ class TonerLandService:
         return PartialURLArray
 
     def sleep5():
-        time.sleep(5)
+        time.sleep(15)
 
     def GetResults(self):
         response = requests.get('file:///base.html',timeout=5)
@@ -60,7 +60,8 @@ class TonerLandService:
     def ContainsKeyWord(self,array):
         for item in range(1,len(array)):
             if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
-                return True
+                return item
+        return -1
 
     def findURLS(self,array,index):
         listOfURLs=[]
@@ -78,21 +79,39 @@ class TonerLandService:
             print("I found a Match")
 
     def findContainers(self): #works for first page to find the urls
-        with open("base.html") as fp:
-            sanitized = BeautifulSoup(fp, 'html.parser')
-            sanitized.encode(fp.encoding)
-            itemContainers=(sanitized.find_all('script', type = "text/javascript"))
-            containerLen=len(itemContainers)
-            urlList=[]
-            for item in range(0,containerLen):
-                tempContainer=itemContainers[item].text
-                splitContainer=tempContainer.split() 
-                if (self.ContainsKeyWord(splitContainer)==True):
-                    urlList=self.findURLS(splitContainer,item)
+        data = self.requestURLs()
+        #with open("base.html") as fp:
+        sanitized = BeautifulSoup(data.text, 'html.parser')
+        # sanitized = BeautifulSoup(fp, 'html.parser')
+        sanitized.encode(data.encoding)
+        itemContainers=(sanitized.find_all('script', type = "text/javascript"))
+        containerLen=len(itemContainers)
+        urlList=[]
+        for item in range(0,containerLen):
+            tempContainer=itemContainers[item].text
+            splitContainer=tempContainer.split() 
+            keywordIndex=self.ContainsKeyWord(splitContainer)
+            if (keywordIndex!=-1):
+                urlList=self.findURLS(splitContainer,keywordIndex)
+
+        return urlList
+
+    def requestURLs(self):
+        baseURL='http://www.tonerland.com/brother.html'
+        headers={
+             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
+        } 
+        response=requests.get(baseURL, headers=headers, timeout=1)
+        return response
 
 
-            return urlList
-
-
-
-
+    def GoThroughURLS(self):
+        ##loop through urlList
+        # requestURLS
+        # parse sk compatible display
+        # sleep15()
+        # save url list on disc
+        # find containers page 2 SearchPrinterModels = findcontainers
+        # 
+        return 0
+        

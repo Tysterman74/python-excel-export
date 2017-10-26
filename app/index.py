@@ -1,6 +1,6 @@
 import easygui
 import NewEggService
-import ExportModule
+from TonerLandService import TonerLandService
 from flask import Flask
 from searchWindows import searchWindows
 
@@ -8,8 +8,11 @@ app = Flask(__name__)
 
 @app.route('/')
 
+
+
 def index():
-    NewEggService.TestUrl()
+    tls = TonerLandService()
+    # NewEggService.TestUrl()
     # ExportModule.TestCreate()
     # response = NewEggService.GetResults()
     # for excelObj in response:
@@ -18,6 +21,8 @@ def index():
     #     print(excelObj.url)
     #     print(excelObj.vendor)
     # ExportModule.create_excel_sheet_from_data(response, 'dicks_in_my_mouth')
+    test=tls.findContainers()
+    print(test)
     return 'asdf'
 
 # searchwindow=searchWindows()
