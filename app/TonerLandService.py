@@ -57,7 +57,7 @@ class TonerLandService:
         else: 
             return False
 
-    def ContainsKeyWord(self,array):
+    def FindKeywordIndex(self,array):
         for item in range(1,len(array)):
             if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
                 return item
@@ -90,7 +90,7 @@ class TonerLandService:
         for item in range(0,containerLen):
             tempContainer=itemContainers[item].text
             splitContainer=tempContainer.split() 
-            keywordIndex=self.ContainsKeyWord(splitContainer)
+            keywordIndex=self.FindKeywordIndex(splitContainer)
             if (keywordIndex!=-1):
                 urlList=self.findURLS(splitContainer,keywordIndex)
 
@@ -105,8 +105,12 @@ class TonerLandService:
         return response
 
 
-    def GoThroughURLS(self):
-        ##loop through urlList
+    def GoThroughUrls(self, urlList):
+        
+        urlListLength=len(urlList)
+        for url in range(0,urlListLength):
+            print(urlList[url])
+        # loop through urlList
         # requestURLS
         # parse sk compatible display
         # sleep15()

@@ -22,7 +22,7 @@ def index():
     #     print(excelObj.vendor)
     # ExportModule.create_excel_sheet_from_data(response, 'dicks_in_my_mouth')
     test=tls.findContainers()
-    print(test)
+    tls.GoThroughUrls(test)
     return 'asdf'
 
 # searchwindow=searchWindows()
