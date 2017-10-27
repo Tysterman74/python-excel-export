@@ -21,8 +21,8 @@ def index():
     #     print(excelObj.url)
     #     print(excelObj.vendor)
     # ExportModule.create_excel_sheet_from_data(response, 'dicks_in_my_mouth')
-    test=tls.findContainers()
-    tls.GoThroughUrls(test)
+    test=tls.FindPrinterModels()
+    #tls.GoThroughUrls(test)
     return 'asdf'
 
 # searchwindow=searchWindows()

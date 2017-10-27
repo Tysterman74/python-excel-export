@@ -110,6 +110,21 @@ class TonerLandService:
         urlListLength=len(urlList)
         for url in range(0,urlListLength):
             print(urlList[url])
+        return 0
+
+    def FindPrinterModels(self):
+
+        with open("base2.html")as fp:
+            sanitized=BeautifulSoup(fp, 'html.parser')
+ 
+            sanitized.encode(fp.encoding)
+            itemContainers=(sanitized.find_all('h2', class_='product-name'))
+
+            containerLen=len(itemContainers)
+
+            for item in range(0,containerLen):
+                print(itemContainers[item])
+        return 0
         # loop through urlList
         # requestURLS
         # parse sk compatible display
@@ -117,5 +132,5 @@ class TonerLandService:
         # save url list on disc
         # find containers page 2 SearchPrinterModels = findcontainers
         # 
-        return 0
+        
         
