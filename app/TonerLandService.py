@@ -13,26 +13,8 @@ class TonerLandService:
 # baseURl + Series hardcoded array webscrape or something
 # for each series scrape source
 
- 
-
-    def createUrlArray(self):
-        baseUrl = 'http://www.tonerland.com/brother/'
-        seriesArray = ['dcp-series.html', 'fax-series.html', 'hl-series.html', 'intellifax-series.html', 'mfc-series.html'] 
-        PartialURLArray=[]
-        for s in seriesArray:
-            PartialURLArray.append(baseUrl+s) 
-        return PartialURLArray
-
     def sleep5():
         time.sleep(15)
-
-    def GetResults(self):
-        response = requests.get('file:///base.html',timeout=5)
-        return response.text
-
-    def parseItemContainer(self, container):
-        santizing=container.split()
-        return santizing
 
     def find1stKeyword(self,word):
         firstWord='var'
@@ -111,19 +93,25 @@ class TonerLandService:
         for url in range(0,urlListLength):
             print(urlList[url])
         return 0
+    
+    def FindModelUrls(self,itemContainers):
+        itemToString = str(itemContainers)
+        firstIndex = itemToString.find('href="') + 6
+        secondIndex = itemToString.find('"',firstIndex)
+        urlItem = itemToString[firstIndex:secondIndex]
+        return urlItem
 
     def FindPrinterModels(self):
 
         with open("base2.html")as fp:
             sanitized=BeautifulSoup(fp, 'html.parser')
- 
             sanitized.encode(fp.encoding)
-            itemContainers=(sanitized.find_all('h2', class_='product-name'))
-
+            itemContainers=(sanitized.find_all('h2', class_="product-name"))
             containerLen=len(itemContainers)
-
             for item in range(0,containerLen):
-                print(itemContainers[item])
+                urlItems=self.FindModelUrls(itemContainers[item])
+
+
         return 0
         # loop through urlList
         # requestURLS
@@ -131,6 +119,51 @@ class TonerLandService:
         # sleep15()
         # save url list on disc
         # find containers page 2 SearchPrinterModels = findcontainers
-        # 
+
+    def fullParse(self,data):
+        title=self.findTitle(data)
+        cost=self.findCost(data)
+        tableInformation=self.pullTableInformation(data)
+        self.pullCompatiblePrinters(data)
+        return 0
+
+
+    def parseFinalPage(self):
+        with open("base3.html") as data:
+            finalPage=BeautifulSoup(data,'html.parser')
+            finalPage.encode(data.encoding)
+            self.fullParse(finalPage)
+
+        return 0
+
+    def findTitle(self,data):
+        title = data.find('h1')
+        return title.get_text()
+
+    def findCost(self,data):
+        cost = data.find(class_='price')
+        return cost.get_text()
+
+    def pullTableInformation(self,data):
+        tableInformation=[]
+        tableRows=data.find_all('td')
+        for item in range(0,len(tableRows)-1):# -1 can't pull compatible printers here
+            tableInformation.append(tableRows[item].get_text())
+        #the Next 4 lines would be what would be given to the Excel exporter
+        sku=tableInformation[0] 
+        pageYield=tableInformation[1]
+        color=tableInformation[2]
+        productType=tableInformation[3]
+
+    def pullCompatiblePrinters(self,data):
+        CompatiblePrinters = data.find_all(class_="sk_compatible")
+        compatiblePrintersList=[]
+        for item in CompatiblePrinters:
+            compatiblePrintersList.append(item.get_text())
         
+        #full list made here! 
+
+
+
+
         

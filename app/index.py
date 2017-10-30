@@ -22,6 +22,7 @@ def index():
     #     print(excelObj.vendor)
     # ExportModule.create_excel_sheet_from_data(response, 'dicks_in_my_mouth')
     test=tls.FindPrinterModels()
+    tls.parseFinalPage()
     #tls.GoThroughUrls(test)
     return 'asdf'
 
