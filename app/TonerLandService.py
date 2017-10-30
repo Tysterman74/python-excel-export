@@ -102,7 +102,7 @@ class TonerLandService:
         return urlItem
 
     def FindPrinterModels(self):
-
+        #base2.html goes to http://www.tonerland.com/brother/dcp-series/dcp-110-c.html
         with open("base2.html")as fp:
             sanitized=BeautifulSoup(fp, 'html.parser')
             sanitized.encode(fp.encoding)
@@ -129,6 +129,7 @@ class TonerLandService:
 
 
     def parseFinalPage(self):
+        #base3.html goes to http://www.tonerland.com/brother-compatible-ink-black.html
         with open("base3.html") as data:
             finalPage=BeautifulSoup(data,'html.parser')
             finalPage.encode(data.encoding)
