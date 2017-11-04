@@ -59,7 +59,15 @@ class TonerLandService:
             print("Could Not Find a match")
         else: 
             print("I found a Match")
+    
+    def writeListToFile(self,listData):
+        file = open("urlList.txt","w")
+        for item in listData:
+            file.write(item)
+            file.write(" \n")
 
+        file.close()
+    
     def findContainers(self): #works for first page to find the urls
         data = self.requestURLs()
         #with open("base.html") as fp:
@@ -83,7 +91,7 @@ class TonerLandService:
         headers={
              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         } 
-        response=requests.get(baseURL, headers=headers, timeout=1)
+        response=requests.get(baseURL, headers=headers, timeout=5)
         return response
 
 
@@ -163,6 +171,7 @@ class TonerLandService:
             compatiblePrintersList.append(item.get_text())
         
         #full list made here! 
+
 
 
 
