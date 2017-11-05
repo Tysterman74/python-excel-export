@@ -70,11 +70,8 @@ class TonerLandService:
     def readListFromFile(self):
         with open('urlList.txt','r+') as data:
             for line in data:
-                data.write(line + "0")
-    
+                data.write("2")
 
-            
-                
     
     def findContainers(self): #works for first page to find the urls
         data = self.requestURLs()
