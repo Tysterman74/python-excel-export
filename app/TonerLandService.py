@@ -1,6 +1,5 @@
 import requests
 import ExcelObject
-import json
 import re
 import time
 from bs4 import BeautifulSoup
@@ -13,7 +12,7 @@ class TonerLandService:
 # baseURl + Series hardcoded array webscrape or something
 # for each series scrape source
 
-    def sleep5():
+    def sleep15():
         time.sleep(15)
 
     def find1stKeyword(self,word):
@@ -67,6 +66,15 @@ class TonerLandService:
             file.write(" \n")
 
         file.close()
+
+    def readListFromFile(self):
+        with open('urlList.txt','r+') as data:
+            for line in data:
+                data.write(line + "0")
+    
+
+            
+                
     
     def findContainers(self): #works for first page to find the urls
         data = self.requestURLs()
@@ -83,7 +91,6 @@ class TonerLandService:
             keywordIndex=self.FindKeywordIndex(splitContainer)
             if (keywordIndex!=-1):
                 urlList=self.findURLS(splitContainer,keywordIndex)
-
         return urlList
 
     def requestURLs(self):

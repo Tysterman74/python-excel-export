@@ -21,9 +21,9 @@ def index():
     #     print(excelObj.url)
     #     print(excelObj.vendor)
     # ExportModule.create_excel_sheet_from_data(response, 'dicks_in_my_mouth')
-    test=tls.findContainers()
-    print(len(test))
-    #tls.writeListToFile(test)
+    # test=tls.findContainers()
+    test2=tls.readListFromFile()
+    # tls.writeListToFile(test)
     #tls.parseFinalPage()
     #tls.GoThroughUrls(test)
     return 'asdf'
