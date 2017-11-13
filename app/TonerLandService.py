@@ -62,17 +62,23 @@ class TonerLandService:
     def writeListToFile(self,listData):
         file = open("urlList.txt","w")
         for item in listData:
-            file.write(item)
-            file.write(" \n")
-
+            file.write(item + '\n')
         file.close()
 
     def readListFromFile(self):
+        urlTemp=[]
         with open('urlList.txt','r+') as data:
             for line in data:
-                data.write("2")
+                urlTemp.append(line[:-1])
+            print(urlTemp)
 
-    
+    def writeSecondListtoFile(self, listdata):
+        file=open('urlList2.txt','w')
+        for item in listdata:
+            file.write(item)
+        file.close()
+
+
     def findContainers(self): #works for first page to find the urls
         data = self.requestURLs()
         #with open("base.html") as fp:
@@ -173,7 +179,7 @@ class TonerLandService:
         compatiblePrintersList=[]
         for item in CompatiblePrinters:
             compatiblePrintersList.append(item.get_text())
-        
+        return compatiblePrintersList
         #full list made here! 
 
 
