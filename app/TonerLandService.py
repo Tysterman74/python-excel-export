@@ -70,13 +70,11 @@ class TonerLandService:
         with open('urlList.txt','r+') as data:
             for line in data:
                 urlTemp.append(line[:-1])
-            print(urlTemp)
+            return urlTemp
 
-    def writeSecondListtoFile(self, listdata):
-        file=open('urlList2.txt','w')
-        for item in listdata:
-            file.write(item)
-        file.close()
+    def requestFromList(self,urlList):
+        for item in urlList:
+            print(item)
 
 
     def findContainers(self): #works for first page to find the urls
@@ -96,17 +94,16 @@ class TonerLandService:
                 urlList=self.findURLS(splitContainer,keywordIndex)
         return urlList
 
-    def requestURLs(self):
-        baseURL='http://www.tonerland.com/brother.html'
+    def requestURLs(self,url):
+        # baseURL='http://www.tonerland.com/brother.html'
         headers={
              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         } 
-        response=requests.get(baseURL, headers=headers, timeout=5)
+        response=requests.get(url, headers=headers, timeout=5)
         return response
 
 
     def GoThroughUrls(self, urlList):
-        
         urlListLength=len(urlList)
         for url in range(0,urlListLength):
             print(urlList[url])
@@ -121,16 +118,17 @@ class TonerLandService:
 
     def FindPrinterModels(self):
         #base2.html goes to http://www.tonerland.com/brother/dcp-series/dcp-110-c.html
-        with open("base2.html")as fp:
-            sanitized=BeautifulSoup(fp, 'html.parser')
-            sanitized.encode(fp.encoding)
-            itemContainers=(sanitized.find_all('h2', class_="product-name"))
-            containerLen=len(itemContainers)
-            for item in range(0,containerLen):
-                urlItems=self.FindModelUrls(itemContainers[item])
-
-
+        #with open("base2.html")as fp:
+        data = self.requestURLs('http://www.tonerland.com/brother/dcp-series/dcp-110-c.html')
+        sanitized=BeautifulSoup(data.text, 'html.parser')
+        sanitized.encode(data.encoding)
+        itemContainers=(sanitized.find_all('h2', class_="product-name"))
+        containerLen=len(itemContainers)
+        for item in range(0,containerLen):
+            urlItems=self.FindModelUrls(itemContainers[item])
+            print(urlItems)
         return 0
+
         # loop through urlList
         # requestURLS
         # parse sk compatible display

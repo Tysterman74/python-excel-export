@@ -24,7 +24,8 @@ def index():
     #test=tls.findContainers()
     # test2=tls.readListFromFile()
     #tls.writeListToFile(test)
-    tls.readListFromFile()
+    #test=tls.readListFromFile()
+    tls.FindPrinterModels()
     #tls.parseFinalPage()
     #tls.GoThroughUrls(test)
     return 'asdf'
