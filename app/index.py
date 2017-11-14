@@ -25,9 +25,10 @@ def index():
     # test2=tls.readListFromFile()
     #tls.writeListToFile(test)
     #test=tls.readListFromFile()
-    tls.FindPrinterModels()
+    #tls.FindPrinterModels('http://www.tonerland.com/brother/dcp-series/dcp-110-c.html')
     #tls.parseFinalPage()
     #tls.GoThroughUrls(test)
+    #tls.makeMainUrlList()
     return 'asdf'
 
 # searchwindow=searchWindows()

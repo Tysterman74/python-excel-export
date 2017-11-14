@@ -65,6 +65,11 @@ class TonerLandService:
             file.write(item + '\n')
         file.close()
 
+    def writeUrlToFile(self,urlData):
+        file = open("urlList2.txt","a+")
+        file.write(urlData + '\n')
+        file.close()
+
     def readListFromFile(self):
         urlTemp=[]
         with open('urlList.txt','r+') as data:
@@ -95,19 +100,18 @@ class TonerLandService:
         return urlList
 
     def requestURLs(self,url):
-        # baseURL='http://www.tonerland.com/brother.html'
         headers={
              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
         } 
         response=requests.get(url, headers=headers, timeout=5)
         return response
 
-
-    def GoThroughUrls(self, urlList):
+    def GoThroughFirstUrls(self, urlList):
         urlListLength=len(urlList)
         for url in range(0,urlListLength):
             print(urlList[url])
-        return 0
+            self.FindPrinterModels(urlList[url])
+            
     
     def FindModelUrls(self,itemContainers):
         itemToString = str(itemContainers)
@@ -116,25 +120,24 @@ class TonerLandService:
         urlItem = itemToString[firstIndex:secondIndex]
         return urlItem
 
-    def FindPrinterModels(self):
+    def FindPrinterModels(self,url):
         #base2.html goes to http://www.tonerland.com/brother/dcp-series/dcp-110-c.html
-        #with open("base2.html")as fp:
-        data = self.requestURLs('http://www.tonerland.com/brother/dcp-series/dcp-110-c.html')
+        data = self.requestURLs(url)
         sanitized=BeautifulSoup(data.text, 'html.parser')
         sanitized.encode(data.encoding)
         itemContainers=(sanitized.find_all('h2', class_="product-name"))
         containerLen=len(itemContainers)
         for item in range(0,containerLen):
             urlItems=self.FindModelUrls(itemContainers[item])
-            print(urlItems)
+            # print(urlItems)
+            self.writeUrlToFile(urlItems)
         return 0
 
-        # loop through urlList
-        # requestURLS
-        # parse sk compatible display
-        # sleep15()
-        # save url list on disc
-        # find containers page 2 SearchPrinterModels = findcontainers
+    def makeMainUrlList(self):
+        
+        urlList=self.readListFromFile()
+        self.GoThroughFirstUrls(urlList)
+
 
     def fullParse(self,data):
         title=self.findTitle(data)
@@ -142,7 +145,6 @@ class TonerLandService:
         tableInformation=self.pullTableInformation(data)
         self.pullCompatiblePrinters(data)
         return 0
-
 
     def parseFinalPage(self):
         #base3.html goes to http://www.tonerland.com/brother-compatible-ink-black.html
