@@ -29,6 +29,7 @@ def index():
     #tls.parseFinalPage()
     #tls.GoThroughUrls(test)
     #tls.makeMainUrlList()
+    tls.parseFinalPage()
     return 'asdf'
 
 # searchwindow=searchWindows()

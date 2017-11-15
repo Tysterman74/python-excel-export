@@ -14,42 +14,6 @@ class TonerLandService:
 
     def sleep15():
         time.sleep(15)
-
-    def find1stKeyword(self,word):
-        firstWord='var'
-        
-        if word==firstWord:
-            return True
-        else:
-            return False
-    
-    def find2ndKeyword(self,word):
-        secondWord='models'
-
-        if word==secondWord:
-            return True
-        else:
-            return False
-
-    def findURLKeyword(self,word):
-        urlKeyword='url:'
-        if word==urlKeyword:
-            return True
-        else: 
-            return False
-
-    def FindKeywordIndex(self,array):
-        for item in range(1,len(array)):
-            if (self.find2ndKeyword(array[item]) and self.find1stKeyword(array[item-1])):
-                return item
-        return -1
-
-    def findURLS(self,array,index):
-        listOfURLs=[]
-        for item in range(index,len(array)):
-            if(self.findURLKeyword(array[item])):
-                listOfURLs.append(array[item+1][1:-4])
-        return(listOfURLs)
             
     def FindManufacturer(self):
         test="dcp-series fax-series hl-series intellifax-series mfc-series"
@@ -138,21 +102,31 @@ class TonerLandService:
         urlList=self.readListFromFile()
         self.GoThroughFirstUrls(urlList)
 
-
     def fullParse(self,data):
+        #data is from parseFinalPage
         title=self.findTitle(data)
+        # print(title)
         cost=self.findCost(data)
+        # print(cost)
         tableInformation=self.pullTableInformation(data)
-        self.pullCompatiblePrinters(data)
-        return 0
-
+        # print(tableInformation)
+        compatiblePrinters=self.pullCompatiblePrinters(data)
+        # print(compatiblePrinters)
+        excelArray=[title,cost,tableInformation[0],tableInformation[1],tableInformation[2],tableInformation[3],compatiblePrinters]
+        return excelArray
+        #return excelArray
+    
     def parseFinalPage(self):
         #base3.html goes to http://www.tonerland.com/brother-compatible-ink-black.html
-        with open("base3.html") as data:
-            finalPage=BeautifulSoup(data,'html.parser')
-            finalPage.encode(data.encoding)
-            self.fullParse(finalPage)
-
+        # with open("base3.html") as data:
+        data=self.requestURLs('http://www.tonerland.com/brother-compatible-ink-black.html')
+        finalPage=BeautifulSoup(data.text,'html.parser')
+        finalPage.encode(data.encoding)
+        self.fullParse(finalPage)
+        #excelArray=[]
+        #excelArray.append(self.fullParse(finalPage))
+        #excelArray.append('http://www.tonerland.com/brother-compatible-ink-black.html')
+        #print(excelArray)
         return 0
 
     def findTitle(self,data):
@@ -173,13 +147,17 @@ class TonerLandService:
         pageYield=tableInformation[1]
         color=tableInformation[2]
         productType=tableInformation[3]
+        return tableInformation
 
     def pullCompatiblePrinters(self,data):
         CompatiblePrinters = data.find_all(class_="sk_compatible")
         compatiblePrintersList=[]
         for item in CompatiblePrinters:
             compatiblePrintersList.append(item.get_text())
-        return compatiblePrintersList
+        strConvert1="".join(compatiblePrintersList)
+        strConvert2=strConvert1.replace('\n',',')
+        strConvert3=strConvert2[1:-1]
+        return strConvert3
         #full list made here! 
 
 
