@@ -1,13 +1,13 @@
 import requests
-import ExcelObject
 import re
 import time
+from ExcelWriter import ExcelWriter
 from bs4 import BeautifulSoup
 
 
 class TonerLandService:
     def __init__(self):
-        print('Initializing')
+        print('Initializing Toner Land Service')
 
 # baseURl + Series hardcoded array webscrape or something
 # for each series scrape source
@@ -41,11 +41,6 @@ class TonerLandService:
                 urlTemp.append(line[:-1])
             return urlTemp
 
-    def requestFromList(self,urlList):
-        for item in urlList:
-            print(item)
-
-
     def findContainers(self): #works for first page to find the urls
         data = self.requestURLs()
         #with open("base.html") as fp:
@@ -74,8 +69,7 @@ class TonerLandService:
         urlListLength=len(urlList)
         for url in range(0,urlListLength):
             print(urlList[url])
-            self.FindPrinterModels(urlList[url])
-            
+            self.FindPrinterModels(urlList[url])         
     
     def FindModelUrls(self,itemContainers):
         itemToString = str(itemContainers)
@@ -116,18 +110,15 @@ class TonerLandService:
         return excelArray
         #return excelArray
     
-    def parseFinalPage(self):
+    def parseFinalPage(self,urlName):
         #base3.html goes to http://www.tonerland.com/brother-compatible-ink-black.html
         # with open("base3.html") as data:
-        data=self.requestURLs('http://www.tonerland.com/brother-compatible-ink-black.html')
+        data=self.requestURLs(urlName)
         finalPage=BeautifulSoup(data.text,'html.parser')
         finalPage.encode(data.encoding)
-        self.fullParse(finalPage)
-        #excelArray=[]
-        #excelArray.append(self.fullParse(finalPage))
-        #excelArray.append('http://www.tonerland.com/brother-compatible-ink-black.html')
-        #print(excelArray)
-        return 0
+        excelArray=self.fullParse(finalPage)
+        excelArray.append(urlName)
+        return excelArray
 
     def findTitle(self,data):
         title = data.find('h1')
@@ -160,6 +151,36 @@ class TonerLandService:
         return strConvert3
         #full list made here! 
 
+    def CreateUrlList(self):
+        eList=[]
+        with open('urlList2.txt','r+') as data:
+            for line in data:
+                eList.append(line[:-1])
+            return eList
+    
+    def CreateExcelArray(self,urlList):
+        e=ExcelWriter()
+        urlListLen=len(urlList)    
+        for i in range(2430,urlListLen):
+            indexString=self.makeIndexAndUrl(i,urlList[i])
+            print(indexString)
+            excelArray=self.parseFinalPage(urlList[i])
+            print('excelArray made')
+            e.appendToExcelSheet(excelArray)
+            print("added to Excel")
+            
+
+    def makeIndexAndUrl(self,index,url):
+        indexStr=''
+        indexStr+=str(index+1)
+        indexStr+=' '
+        indexStr+=url
+        return indexStr
+            
+    
+        
+        
+        
 
 
 

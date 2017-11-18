@@ -1,6 +1,7 @@
 import easygui
 import NewEggService
 from TonerLandService import TonerLandService
+from ExcelWriter import ExcelWriter
 from flask import Flask
 from searchWindows import searchWindows
 
@@ -29,7 +30,10 @@ def index():
     #tls.parseFinalPage()
     #tls.GoThroughUrls(test)
     #tls.makeMainUrlList()
-    tls.parseFinalPage()
+    # tls.parseFinalPage()
+    a=tls.CreateUrlList()
+    tls.CreateExcelArray(a)
+    
     return 'asdf'
 
 # searchwindow=searchWindows()
