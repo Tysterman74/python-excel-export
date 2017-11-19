@@ -161,7 +161,7 @@ class TonerLandService:
     def CreateExcelArray(self,urlList):
         e=ExcelWriter()
         urlListLen=len(urlList)    
-        for i in range(2430,urlListLen):
+        for i in range(364,urlListLen):
             indexString=self.makeIndexAndUrl(i,urlList[i])
             print(indexString)
             excelArray=self.parseFinalPage(urlList[i])
