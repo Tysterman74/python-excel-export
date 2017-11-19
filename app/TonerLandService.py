@@ -97,11 +97,9 @@ class TonerLandService:
         self.GoThroughFirstUrls(urlList)
 
     def fullParse(self,data):
-        #data is from parseFinalPage
+        title,cost,sku,pageYield,color,productType=("N/A",)*6
         title=self.findTitle(data)
-        # print(title)
         cost=self.findCost(data)
-        # print(cost)
         sku=self.findSKU(data)
         pageYield=self.findPageYield(data)
         color=self.findColor(data)
@@ -183,7 +181,7 @@ class TonerLandService:
     def CreateExcelArray(self,urlList):
         e=ExcelWriter()
         urlListLen=len(urlList)    
-        for i in range(0,urlListLen):
+        for i in range(0,10):
             indexString=self.makeIndexAndUrl(i,urlList[i])
             print(indexString)
             excelArray=self.parseFinalPage(urlList[i])
