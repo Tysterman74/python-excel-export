@@ -97,7 +97,6 @@ class TonerLandService:
         self.GoThroughFirstUrls(urlList)
 
     def fullParse(self,data):
-        title,cost,sku,pageYield,color,productType=("N/A",)*6
         title=self.findTitle(data)
         cost=self.findCost(data)
         sku=self.findSKU(data)
@@ -134,27 +133,39 @@ class TonerLandService:
 
     def findSKU(self,data):
         table=data.find('th',text='SKU')
-        sku=table.findNext('td')
-        skuText=sku.text
-        return skuText
+        if (table==None):
+            return "N/A"
+        else:
+            sku=table.findNext('td')
+            skuText=sku.text
+            return skuText
 
     def findPageYield(self,data):
         table=data.find('th',text='Page Yield')
-        pageYield=table.findNext('td')
-        pyText=pageYield.text
-        return pyText
+        if (table==None):
+            return "N/A"
+        else:
+            pageYield=table.findNext('td')
+            pyText=pageYield.text
+            return pyText
 
     def findColor(self,data):
         table=data.find('th',text='Color')
-        color=table.findNext('td')
-        cText=color.text
-        return cText
+        if (table==None):
+            return "N/A"
+        else:
+            color=table.findNext('td')
+            cText=color.text
+            return cText
 
     def findProductType(self,data):
         table=data.find('th',text='Type of Product')
-        productType=table.findNext('td')
-        ptText=productType.text
-        return ptText
+        if (table==None):
+            return "N/A"
+        else:
+            productType=table.findNext('td')
+            ptText=productType.text
+            return ptText
         
         
 
@@ -181,7 +192,7 @@ class TonerLandService:
     def CreateExcelArray(self,urlList):
         e=ExcelWriter()
         urlListLen=len(urlList)    
-        for i in range(0,10):
+        for i in range(151,153):
             indexString=self.makeIndexAndUrl(i,urlList[i])
             print(indexString)
             excelArray=self.parseFinalPage(urlList[i])
