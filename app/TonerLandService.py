@@ -192,7 +192,7 @@ class TonerLandService:
     def CreateExcelArray(self,urlList):
         e=ExcelWriter()
         urlListLen=len(urlList)    
-        for i in range(151,153):
+        for i in range(1986,urlListLen):
             indexString=self.makeIndexAndUrl(i,urlList[i])
             print(indexString)
             excelArray=self.parseFinalPage(urlList[i])
@@ -203,7 +203,7 @@ class TonerLandService:
 
     def makeIndexAndUrl(self,index,url):
         indexStr=''
-        indexStr+=str(index+1)
+        indexStr+=str(index)
         indexStr+=' '
         indexStr+=url
         return indexStr
