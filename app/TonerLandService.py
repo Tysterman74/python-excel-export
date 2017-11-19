@@ -102,11 +102,14 @@ class TonerLandService:
         # print(title)
         cost=self.findCost(data)
         # print(cost)
-        tableInformation=self.pullTableInformation(data)
-        # print(tableInformation)
+        sku=self.findSKU(data)
+        pageYield=self.findPageYield(data)
+        color=self.findColor(data)
+        productType=self.findProductType(data)
+
         compatiblePrinters=self.pullCompatiblePrinters(data)
         # print(compatiblePrinters)
-        excelArray=[title,cost,tableInformation[0],tableInformation[1],tableInformation[2],tableInformation[3],compatiblePrinters]
+        excelArray=[title,cost,sku,pageYield,color,productType,compatiblePrinters]
         return excelArray
         #return excelArray
     
@@ -128,17 +131,36 @@ class TonerLandService:
         cost = data.find(class_='price')
         return cost.get_text()
 
-    def pullTableInformation(self,data):
-        tableInformation=[]
-        tableRows=data.find_all('td')
-        for item in range(0,len(tableRows)-1):# -1 can't pull compatible printers here
-            tableInformation.append(tableRows[item].get_text())
-        #the Next 4 lines would be what would be given to the Excel exporter
-        sku=tableInformation[0] 
-        pageYield=tableInformation[1]
-        color=tableInformation[2]
-        productType=tableInformation[3]
-        return tableInformation
+
+
+
+    def findSKU(self,data):
+        table=data.find('th',text='SKU')
+        sku=table.findNext('td')
+        skuText=sku.text
+        return skuText
+
+    def findPageYield(self,data):
+        table=data.find('th',text='Page Yield')
+        pageYield=table.findNext('td')
+        pyText=pageYield.text
+        return pyText
+
+    def findColor(self,data):
+        table=data.find('th',text='Color')
+        color=table.findNext('td')
+        cText=color.text
+        return cText
+
+    def findProductType(self,data):
+        table=data.find('th',text='Type of Product')
+        productType=table.findNext('td')
+        ptText=productType.text
+        return ptText
+        
+        
+
+
 
     def pullCompatiblePrinters(self,data):
         CompatiblePrinters = data.find_all(class_="sk_compatible")
@@ -161,7 +183,7 @@ class TonerLandService:
     def CreateExcelArray(self,urlList):
         e=ExcelWriter()
         urlListLen=len(urlList)    
-        for i in range(364,urlListLen):
+        for i in range(0,urlListLen):
             indexString=self.makeIndexAndUrl(i,urlList[i])
             print(indexString)
             excelArray=self.parseFinalPage(urlList[i])
